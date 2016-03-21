@@ -1,0 +1,30 @@
+{
+  "name": "auth-express",
+  "version": "1.0.0",
+  "description": "authentification\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[Dmultiple-auth-passport-express",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SergiiKudriashov/node-express-auth.git"
+  },
+  "keywords": [
+    "github",
+    "server",
+    "authetification",
+    "passport",
+    "local",
+    "passport-github2",
+    "passport-local",
+    "express",
+    "node"
+  ],
+  "author": "Sergii Kudriashov",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SergiiKudriashov/node-express-auth/issues"
+  },
+  "homepage": "https://github.com/SergiiKudriashov/node-express-auth#readme"
+}
