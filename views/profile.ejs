@@ -3,8 +3,13 @@
     <section>
       <div class="section-wrapper">
         <h2>Profile information</h2>
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad placeat suscipit illo aliquid totam, pariatur nemo reprehenderit. Blanditiis velit ad voluptates dolore aliquam impedit, sequi ullam adipisci, non quidem illum mollitia iure. Ducimus voluptatum quos, beatae velit odio fugiat nesciunt.</p>
-      </div>
+      <% if (user) { %>
+          <p><%= user._id %></p>
+      <% } else { %>
+          <a href="/login">Login Local</a>
+          <span>or</span>
+          <a href="/sign">Register</a>
+      <% } %>
     </section>
   </main>
 <% include ./parts/footer %>
