@@ -3,13 +3,19 @@
     <section>
       <div class="section-wrapper">
         <h2>Profile information</h2>
-      <% if (user) { %>
-          <p><%= user._id %></p>
-      <% } else { %>
-          <a href="/login">Login Local</a>
-          <span>or</span>
-          <a href="/sign">Register</a>
-      <% } %>
+        <% if (user.local) { %>
+          <p>
+            <strong>id</strong>: <%= user._id %><br>
+            <strong>local username</strong>: <%= user.local.username %><br>
+            <strong>hashed password</strong>: <%= user.local.hashPass %><br>
+            <strong>id</strong>: <%= user.github.id %><br>
+            <strong>token</strong>: <%= user.github.token %><br>
+            <strong>name</strong>: <%= user.github.name %><br>
+          </p>
+        <% } else { %>
+          <a href="/local" class="btn btn-default">Connect Local</a>
+          <a href="/local" class="btn btn-default">Connect Local</a>
+        <% } %>
     </section>
   </main>
 <% include ./parts/footer %>

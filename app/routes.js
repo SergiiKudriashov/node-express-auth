@@ -1,22 +1,26 @@
 //routes
-
-
 module.exports = function(app, passport) {
 
     app.get('/', (req, res) => {
-        res.render('index.ejs');
+        var user = req.user;
+        res.render('index.ejs',{user:user});
     });
 
     app.get('/info', (req, res) => {
-        res.render('info.ejs');
+        var user = req.user;
+        console.log(user);
+        res.render('info.ejs',{user:user});
     });
 
-    app.get('/profile', (req, res) => {
-        res.render('profile.ejs');
+    app.get('/profile', isLoggedIn, (req, res) => {
+        var user = req.user;
+        console.log(user);
+        res.render('profile.ejs', {user:user});
     });
 
     app.get('/login', (req, res) => {
-        res.render('local-login.ejs');
+        var user = req.user;
+        res.render('local-login.ejs',{user:user});
     });
 
     app.get('/logout', (req, res, next) => {
@@ -29,8 +33,18 @@ module.exports = function(app, passport) {
         failureRedirect: '/login'
     }));
 
+    app.get('/gitlogin', passport.authenticate('git-login'));
+
+    app.get('/github/callback',
+        passport.authenticate('git-login', { failureRedirect: '/' }),
+        function(req, res) {
+          // Successful authentication, redirect home.
+          res.redirect('/profile');
+        });
+
     app.get('/sign', (req, res) => {
-        res.render('sign.ejs');
+        var user = req.user;
+        res.render('sign.ejs',{user:user});
     });
 
     app.post('/sign', passport.authenticate('local-signup', {

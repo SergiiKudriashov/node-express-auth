@@ -5,22 +5,17 @@ var userSchema = new mongoose.Schema({
   local: {
     username: {
       type: String,
-      require: '{PATH} is required',
-      unique: true
     },
     salt: {
       type: String,
-      default: ''
     },
     hashPass: {
       type: String,
-      default: ''
     }
   },
   github: {
     id: String,
     token: String,
-    email: String,
     name: String
   }
 });
