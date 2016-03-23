@@ -1,15 +1,109 @@
-.form-holder {
-  max-width: 600px;
-  margin: 0 auto;
-  padding-top: 100px;
-  padding-bottom: 100px;
+/*Body*/
+body {
+	position: relative;
 }
+/*Header*/
 header {
-  background-color: #dad;
+	background-color: #4d4d4c;
+	padding-top: 16px;
 }
+header .button-group .button:not(:last-child) {
+	border-right: 1px solid #4d4d4c;
+}
+header .button-group .button {
+	background-color: #444;
+	color: #fff;
+	text-transform: uppercase;
+}
+header .button-group .button:hover {
+	background-color: #333;
+	color: #7fa1d2;
+	text-shadow: 0px 0px 10px rgba(200, 191, 198, 0.8);
+}
+.header-wrapper {
+	max-width: 1000px;
+	margin: 0 auto;
+}
+/*-------*/
+/*Main*/
+main {
+	background-color: rgba(0,0,0,0.5);
+	color: #fafafa;
+	padding: 20px 0;
+	height: 100%;
+}
+/*-------*/
 .section-wrapper {
-  max-width: 900px;
-  margin: 0 auto;
-  padding-top: 50px;
-  padding-bottom: 50px;
+	max-width: 900px;
+	margin: 0 auto;
+	padding: 50px;
+	background-color: rgba(64,64,64,0.9);
+}
+.content-right.button-group {
+	float: right;
+}
+.form-holder {
+	max-width: 600px;
+	margin: 0 auto;
+	padding-top: 100px;
+	padding-bottom: 100px;
+}
+/*Footer*/
+footer {
+
+}
+
+/*Profile*/
+.profile .avatar-holder,
+.profile .no-avatar {
+	display: block;
+	margin: 0 auto;
+	width: 320px;
+}
+.profile .avatar-holder img{
+	width: 100%;
+}
+
+.profile .info-holder,
+.profile .avatar-holder,
+.form-holder {
+	padding: 15px;
+	background-color: rgba(0,0,0,0.2);
+}
+.section-form .form-holder{
+	padding: 15px;
+	background-color: rgba(64,64,64,0.8);
+}
+.profile h3 {
+	text-align: center;
+	font-weight: 600;
+	color: #9acfcd;
+}
+
+.profile .info {
+	word-wrap: break-word;
+}
+.profile .info-holder strong {
+	color: #9acfcd;
+}
+
+.form-holder label {
+	color: 	#9acfcd;
+}
+
+@media (max-width: 1920px) {
+	body {
+		background: url(/static/img/vaz-bg.jpg) center center fixed no-repeat;
+	}
+}
+@media (max-width: 789px) {
+	.profile .avatar-holder {
+		width: 250px;
+	}
+}
+
+@media (max-width: 640px) {
+	.profile .columns {
+	margin-bottom: 50px;
+	}
 }

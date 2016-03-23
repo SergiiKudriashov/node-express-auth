@@ -1,21 +1,58 @@
 <% include ./parts/header %>
-  <main>
-    <section>
-      <div class="section-wrapper">
-        <h2>Profile information</h2>
-        <% if (user.local) { %>
-          <p>
-            <strong>id</strong>: <%= user._id %><br>
-            <strong>local username</strong>: <%= user.local.username %><br>
-            <strong>hashed password</strong>: <%= user.local.hashPass %><br>
-            <strong>id</strong>: <%= user.github.id %><br>
-            <strong>token</strong>: <%= user.github.token %><br>
-            <strong>name</strong>: <%= user.github.name %><br>
-          </p>
-        <% } else { %>
-          <a href="/local" class="btn btn-default">Connect Local</a>
-          <a href="/local" class="btn btn-default">Connect Local</a>
-        <% } %>
-    </section>
-  </main>
+
+	<main>
+		<section>
+			<div class="section-wrapper profile row">
+				<% if (user) { %>
+					<div class="small-12 medium-6 large-6 columns">
+						<h3>Your profile photo</h3>
+						<% if (user.github.avatar) { %>
+						<div class="avatar-holder">
+							<img src=<%= user.github.avatar %> alt="github avatar">
+						</div>
+						<% } %>
+						<% if (user.local.avatar) { %>
+						<div class="avatar-holder">
+							<img src=<%= user.local.avatar %> alt="local avatar">
+						</div>
+						<div>
+							<h3>Update profile photo</h3>
+							<% include ./parts/avatar-form %>
+						</div>
+						<% } %>
+						<% if (!user.github.avatar && !user.local.avatar) { %>
+						<div class="avatar-holder">
+							<img src="/static/img/no-avatar.jpg" alt="no avatar">
+						</div>
+						<div>
+							<h3>Add profile photo</h3>
+							<% include ./parts/avatar-form %>
+						</div>
+						<% } %>
+					</div>
+
+				<% } %>
+				<% if (user) { %>
+					<div class="small-12 medium-6 large-6 columns info">
+						<h3>Your profile information</h3>
+						<div class="info-holder">
+							<% if (user.github.id) { %>
+							<div><p><strong>Github name</strong>: <%= user.github.name %></p></div>
+							<div><p><strong>Unique ID</strong>: <%= user._id %></p></div>
+							<div><p><strong>Github ID</strong>: <%= user.github.id %></p></div>
+							<div><p><strong>Github token</strong>: <%= user.github.token %></p></div>
+							<div><p><strong>Unique ID</strong>: <%= user._id %></p></div>
+							<% } %>
+							<% if (user.local.username) { %>
+							<div><p><strong>Username</strong>: <%= user.local.username %></p></div>
+							<div><p><strong>Hashed password</strong>: <%= user.local.hashPass %></p></div>
+							<div><p><strong>Salt</strong>: <%= user.local.salt %></p></div>
+							<% } %>
+						</div>
+					</div>
+				<% } %>
+			</div>
+		</section>
+	</main>
+
 <% include ./parts/footer %>

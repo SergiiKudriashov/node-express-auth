@@ -5,18 +5,17 @@ var userSchema = new mongoose.Schema({
   local: {
     username: {
       type: String,
+      unique: true
     },
-    salt: {
-      type: String,
-    },
-    hashPass: {
-      type: String,
-    }
+    salt: String,
+    hashPass: String,
+    avatar: String
   },
   github: {
     id: String,
     token: String,
-    name: String
+    name: String,
+    avatar: String
   }
 });
 

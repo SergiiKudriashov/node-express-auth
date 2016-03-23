@@ -1,29 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>HW3</title>
-  <link rel="stylesheet" href="/static/lib/css/foundation.min.css">
-  <link rel="stylesheet" href="/static/css/all.css">
+	<meta charset="UTF-8">
+	<title>HW3</title>
+	<link rel="stylesheet" href="/static/lib/css/foundation.min.css">
+	<link rel="stylesheet" href="/static/css/all.css">
+	<script src="/static/lib/scripts/jquery-2.2.2.min.js"></script>
 </head>
 <body>
-  <header class="row">
-    <nav class="medium-9 small-12 columns">
-      <ul class="breadcrumbs">
-        <li><a href="/">Home page</a></li>
-        <li><a href="/info">Information</a></li>
-      </ul>
-    </nav>
-    <div class="medium-3 small-12 columns">
-      <ul class="breadcrumbs">
-        <% if (user) { %>
-          <li><a href="/profile">Profile</a></li>
-          <li><a href="/logout">Logut</a></li>
-        <% } else { %>
-          <li><a href="/sign">Registration</a></li>
-          <li><a href="/login">Login</a></li>
-          <li><a href="/gitlogin">Login with git</a></li>
-        <% } %>
-      </ul>
-    </div>
-  </header>
+
+	<header>
+		<div class="header-wrapper row"> 
+			<nav class="medium-7 small-12 columns">
+				<div class="small button-group">
+					<a class="button" href="/">Patsan.org</a>
+					<a class="button" href="/info">Information</a>
+				</div>
+			</nav>
+			<div class="medium-5 small-12 columns content-right">
+				<div class="small button-group content-right">
+				<% if (user) { %>
+					<a class="button" href="/profile">Profile</a>
+					<a class="button" href="/logout">Logut</a>
+				<% } else { %>
+					<a class="button" href="/sign">Registration</a>
+					<a class="button" href="/login">Login</a>
+					<a class="button" href="/gitlogin">Login with git</a>
+				<% } %>
+				</div>
+			</div>
+		</div>
+
+	</header>

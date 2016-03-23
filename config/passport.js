@@ -70,6 +70,7 @@ module.exports = function(passport) {
                 return done(null, user);
             });
         }));
+    
     passport.use('git-login', new GithubStrategy({
       clientID: social.githubAuth.clientID,
       clientSecret: social.githubAuth.clientSecret,
@@ -78,7 +79,7 @@ module.exports = function(passport) {
       passReqToCallback : true
     },
     function(req, token, refreshToken, profile, done) {
-            console.log('req--->',req);
+            console.log('avatar_url--->',profile._json.avatar_url);
             // console.log('profile name--->',profile.username);
             // console.log('profile id--->',profile.id);
             // console.log('json--->',profile._json);
@@ -99,7 +100,7 @@ module.exports = function(passport) {
                             if (!user.github.token) {
                                 user.github.token = token;
                                 user.github.name  = profile.username;
-
+                                user.github.avatar  = profile._json.avatar_url;
                                 user.save(function(err) {
                                     if (err)
                                         return done(err);
@@ -116,7 +117,7 @@ module.exports = function(passport) {
                             newUser.github.id    = profile.id;
                             newUser.github.token = token;
                             newUser.github.name  = profile.username;
-
+                            newUser.github.avatar  = profile._json.avatar_url;
                             newUser.save(function(err) {
                                 if (err)
                                     return done(err);
@@ -128,12 +129,12 @@ module.exports = function(passport) {
 
                 } else {
                     // user already exists and is logged in, we have to link accounts
-                    var user            = req.user; // pull the user out of the session
+                    var user = req.user; // pull the user out of the session
 
                     user.github.id    = profile.id;
                     user.github.token = token;
                     user.github.name  = profile.username;
-
+                    user.github.avatar  = profile._json.avatar_url;
 
                     user.save(function(err) {
                         if (err)
