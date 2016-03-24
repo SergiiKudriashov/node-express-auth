@@ -37,6 +37,7 @@ main {
 	max-width: 900px;
 	margin: 0 auto;
 	padding: 50px;
+	margin-bottom: 10px;
 	background-color: rgba(64,64,64,0.9);
 }
 .content-right.button-group {
@@ -90,7 +91,26 @@ footer {
 .form-holder label {
 	color: 	#9acfcd;
 }
-
+.form-holder.post {
+	max-width: 900px;
+	margin: 0 auto;
+	padding: 50px;
+	background-color: rgba(64,64,64,0.9);
+}
+.extra-info {
+	font-size: 0.7em;
+	text-align: right;
+}
+.post-info {
+	color: #9acfcd;
+}
+.single-post {
+	margin: 10px;
+}
+.single-post p {
+	margin-bottom: 0;
+	background-color: #333;
+}
 @media (max-width: 1920px) {
 	body {
 		background: url(/static/img/vaz-bg.jpg) center center fixed no-repeat;

@@ -3,12 +3,14 @@
 const express = require('express');
 const multer = require('multer');
 const mongoose = require('mongoose');
+mongoose.Promise = require('Q').Promise;
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const session = require('express-session');
 const passport = require('passport');
 
 const app = express();
+const server = require('http').createServer(app);
 const config = require('./config/env.js');
 const database = require('./config/database.js');
 
@@ -38,7 +40,7 @@ require('./config/mongoose.js')(database);
 require('./config/passport.js')(passport);
 require('./app/routes.js')(app, passport);
 
-app.listen(config.port, config.ip, function() {
+server.listen(config.port, config.ip, function() {
     console.log('Server listening on', config.ip, config.port);
 });
 
