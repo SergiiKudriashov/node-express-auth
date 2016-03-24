@@ -19,7 +19,7 @@ var userSchema = new mongoose.Schema({
   }
 });
 
-userSchema.methods.authenticate = function(password) {
+userSchema.methods.authenticate = (password) => {
   if (encryption.generateHashedPassword(this.local.salt, password) === this.local.hashPass) {
     return true;
   } else {

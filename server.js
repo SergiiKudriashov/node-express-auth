@@ -26,14 +26,12 @@ app.use('/static', express.static(__dirname + '/public'));
 app.use(bodyParser.urlencoded({
     extended: false
 }));
+
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(function (req, res, next) {
-  // var sess = req.session;
-  // console.log(sess);
   next()
 })
-
 
 app.set('view engine', 'ejs');
 require('./config/mongoose.js')(database);

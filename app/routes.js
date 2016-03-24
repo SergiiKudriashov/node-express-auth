@@ -5,6 +5,28 @@ const mime = require('mime');
 const User = require('./models/user.js');
 const Post = require('./models/post.js');
 
+const isLoggedIn = (req, res, next) => {
+  if (req.isAuthenticated())
+  return next();
+
+  res.redirect('/login');
+}
+
+const uploadPlace = './public/uploads';
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, uploadPlace)
+  },
+  filename: (req, file, cb) => {
+    if (req.user&&req.user.local.username) {
+      cb(null, req.user.local.username+'.'+mime.extension(file.mimetype));
+    } else {
+      cb('Log in mfk');
+    }
+  }
+})
+const upload = multer({ storage: storage });
+
 module.exports = function(app, passport) {
 
     app.get('/', (req, res, done) => {
@@ -43,7 +65,7 @@ module.exports = function(app, passport) {
         Post.find({})
         .then(function (posts) {
             var postes=posts;
-            console.log(posts);
+            // console.log(posts);
             res.render('index.ejs', {
                 user: user,
                 posts: postes
@@ -52,13 +74,7 @@ module.exports = function(app, passport) {
         .catch(function (err) {
           return done(err);
         });
-        // console.log('-------');
-        // console.log(posts);
-        // console.log('-------');
-        // console.log(res);
-        // res.render('index.ejs', {
-        //     user: user
-        // });
+
 
     });
 
@@ -102,7 +118,6 @@ module.exports = function(app, passport) {
             failureRedirect: '/'
         }),
         function(req, res) {
-            // Successful authentication, redirect home.
             res.redirect('/profile');
         });
 
@@ -122,9 +137,8 @@ module.exports = function(app, passport) {
         var filename = (req.file.filename);
         var username = (req.user.local.username);
         // console.log(filename,username);
-            User.findOne({
-                'local.username': username
-            }, function(err, user) {
+            User.findOne({'local.username': username},
+            function(err, user) {
                 if (err) {
                 return done(err); }
                 console.log(user);
@@ -141,8 +155,6 @@ module.exports = function(app, passport) {
     })
 
     app.post('/newpost', isLoggedIn, function(req, res, done) {
-        console.log(req.user);
-        console.log(req.body);
         var newPost = new Post();
         newPost.content.text = req.body.content;
         newPost.author = req.user._id;
@@ -154,33 +166,4 @@ module.exports = function(app, passport) {
         res.redirect('/');
     })
 
-
-
-
-
-
-
 };
-
-function isLoggedIn(req, res, next) {
-    if (req.isAuthenticated())
-        return next();
-
-    res.redirect('/login');
-}
-const uploadPlace = './public/uploads';
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, uploadPlace)
-  },
-  filename: function (req, file, cb) {
-    if (req.user&&req.user.local.username) {
-        cb(null, req.user.local.username+'.'+mime.extension(file.mimetype));
-    } else {
-        cb('Log in mfk');
-    }
-  }
-})
-
-
-const upload = multer({ storage: storage })

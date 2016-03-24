@@ -6,16 +6,20 @@ const encryption = require('../app/crypto.js');
 const User = require('../app/models/user.js');
 const social = require('./auth.js');
 
-module.exports = function(passport) {
+module.exports = (passport) => {
 
-    passport.serializeUser(function(user, done) {
+    passport.serializeUser((user, done) => {
         done(null, user.id);
     });
 
-    passport.deserializeUser(function(id, done) {
-        User.findById(id, function(err, user) {
-            done(err, user);
-        });
+    passport.deserializeUser((id, done) => {
+      User.findById(id)
+      .then(function (user) {
+        done(null, user);
+      })
+      .catch(function (err) {
+        return done(err);
+      });
     });
 
     passport.use('local-signup', new LocalStrategy({
@@ -70,7 +74,7 @@ module.exports = function(passport) {
                 return done(null, user);
             });
         }));
-    
+
     passport.use('git-login', new GithubStrategy({
       clientID: social.githubAuth.clientID,
       clientSecret: social.githubAuth.clientSecret,
