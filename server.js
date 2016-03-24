@@ -37,6 +37,7 @@ app.set('view engine', 'ejs');
 require('./config/mongoose.js')(database);
 require('./config/passport.js')(passport);
 require('./app/routes.js')(app, passport);
+require('./config/socket')(server);
 
 server.listen(config.port, config.ip, function() {
     console.log('Server listening on', config.ip, config.port);

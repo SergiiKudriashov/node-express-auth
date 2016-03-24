@@ -1,13 +1,12 @@
 <% include ./parts/header %>
   <main>
-      <h2>Patsan forum</h2>
 
       <div class="section-wrapper">
 
           <% if (posts[0]) { posts.forEach(function(item){ %>
             <div class="single-post">
               <!-- <p>author._id <%= item.author %></p> -->
-              <p><%= item.content.text %></p>
+              <p class="content-post"><%= item.content.text %></p>
               <p class="extra-info">
                 <span class="post-info">author._idspa </span><%= item.author %><span class="post-info"> posted </span> <%= item.data %></p>
             </div>

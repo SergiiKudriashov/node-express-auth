@@ -36,7 +36,7 @@ main {
 .section-wrapper {
 	max-width: 900px;
 	margin: 0 auto;
-	padding: 50px;
+	padding: 20px;
 	margin-bottom: 10px;
 	background-color: rgba(64,64,64,0.9);
 }
@@ -106,10 +106,16 @@ footer {
 }
 .single-post {
 	margin: 10px;
+	background-color: #666;
 }
 .single-post p {
 	margin-bottom: 0;
-	background-color: #333;
+	padding: 5px 10px;
+}
+.single-post .content-post {
+	background-color: #999;
+	margin: 0 5px 0 0;
+	border-radius: 5px 5px 0 5px;
 }
 @media (max-width: 1920px) {
 	body {
