@@ -5,28 +5,19 @@
 	<title>HW3</title>
 	<link rel="stylesheet" href="/static/lib/css/foundation.min.css">
 	<link rel="stylesheet" href="/static/css/all.css">
-	<script>
-    <% if (user) { %>
-        window.userId = "<%= user._id %>";
-
-    <% } %>
-</script>
 </head>
 <body>
-
 	<header>
-	
 		<div class="header-wrapper row">
 			<nav class="medium-5 small-12 columns">
 				<div class="small button-group">
 					<a class="button" href="/">Patsan.org</a>
-					<a class="button" href="/info">Information</a>
 				</div>
 			</nav>
 			<div class="medium-7 small-12 columns content-right">
 				<div class="small button-group content-right">
 				<% if (user) { %>
-					<a class="button" href="/profile">Profile</a>
+					<a class="button" href="/profile" id="profile" value="<%= user._id %>">Profile</a>
 					<a class="button" href="/logout">Logut</a>
 				<% } else { %>
 					<a class="button" href="/sign">Registration</a>
@@ -36,5 +27,4 @@
 				</div>
 			</div>
 		</div>
-
-	</header>
+</header>
