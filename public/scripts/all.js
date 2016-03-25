@@ -7,6 +7,7 @@ var socket = io('http://localhost:3434');
 			state: [],
 			newState: []
 		};
+		window.renderer=[];
 		postsIn.forEach(function(item,i){
 			wall += '<div class="single-post" id="'+item._id+'">'+
 			'<div class="ava-post-holder"><img src='+item.authorAvatar+' alt="'+item.authorName+'" /></div>'+
@@ -17,12 +18,11 @@ var socket = io('http://localhost:3434');
 			'<span class="post-info">'+item.data.toString()+'</span>'+
 			'</p></div>'+
 			'<div id="'+item._id+'-comment" class="comment-form-holder"></div>'+
-			'<div id="'+item._id+'-input" class="comment-input-holder" data-postid="'+item._id+'">'+
-			'<span class="first-part"></span>'
-			'<span><input class="post-form-user" type="hidden" name="postId" value="'+item._id+'"></span>'+
-			'<span class="second-part"></span>'
-			'</div>';
+			'<div id="'+item._id+'-input" class="comment-input-holder"></div>';
+			
+			renderer.push('<input class="post-form-user" type="hidden" name="postId" value="'+item._id+'">')
 		});
+		window.
 	// console.log(wall);
 	$("#wallPost").html(wall);
 	})
@@ -33,7 +33,7 @@ var socket = io('http://localhost:3434');
 		$('#postText').val('').focus();
 	});
 
-	
+
 
 
 // '<div class="single-post">'+
