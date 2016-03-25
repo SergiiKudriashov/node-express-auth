@@ -32,10 +32,58 @@ module.exports = function(app, passport) {
 
     app.get('/', (req, res, done) => {
         var user = req.user;
+        console.log(user);
+        // var post;
+        // var arr=[];
+        // const findAuthor = (item,arr,next) => {
+        //     var author = item.author;
+        //     // console.log(author);
+        //     User.findOne({
+        //         '_id': author
+        //     }, function(err, arr, authorComp) {
+        //         if (err) { return done(err); }
+        //         // arr.push(authorComp);
+        //         console.log(authorComp);
+        //
+        //         // console.log(item.user);
+        //         // console.log(item.user);
+        //         // done(null,item);
+        //
+        //    });
+        // };
+
+        // Post.find({}, function(err, posts) {
+            //  if (err) {return done(err);}
+            //  post = posts;
+            //  console.log(posts);
+
+            //  post.forEach(findAuthor);
+            //  console.log(post);
+            // console.log('-------');
+            // console.log(post);
+            // console.log('-------');
+            //  return done(null, posts);
+        // });
+        // Post.find({})
+        // .then(function (posts) {
+        //     let postes=[];
+        //         posts.forEach(function(item){
+        //             let objId = item._id.toString();
+        //             postes.push(objId)
+        //         });
+        //     console.log(postes);
             res.render('index.ejs', {
-                user: user,
-                posts: undefined
+                user: user
             });
+            // res.render('index.ejs', {
+            //     user: user,
+            //     posts: postes
+            // });
+        })
+        .catch(function (err) {
+          return done(err);
+        });
+
 
     });
 

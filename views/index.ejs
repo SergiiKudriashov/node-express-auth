@@ -1,23 +1,99 @@
-<% include ./parts/header %>
-  <main>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>HW3</title>
+  <link rel="stylesheet" href="/static/lib/css/foundation.min.css">
+  <link rel="stylesheet" href="/static/css/all.css">
+</head>
+<body>
 
-      <div class="section-wrapper">
-
-          <% if (posts[0]) { posts.forEach(function(item){ %>
-            <div class="single-post">
-              <!-- <p>author._id <%= item.author %></p> -->
-              <p class="content-post"><%= item.content.text %></p>
-              <p class="extra-info">
-                <span class="post-info">author._idspa </span><%= item.author %><span class="post-info"> posted </span> <%= item.data %></p>
-            </div>
-          <% })} %>
-
+  <header>
+  
+    <div class="header-wrapper row">
+      <nav class="medium-5 small-12 columns">
+        <div class="small button-group">
+          <a class="button" href="/">Patsan.org</a>
+          <a class="button" href="/info">Information</a>
+        </div>
+      </nav>
+      <div class="medium-7 small-12 columns content-right">
+        <div class="small button-group content-right">
+        <% if (user) { %>
+          <a class="button" href="/profile">Profile</a>
+          <a class="button" href="/logout">Logut</a>
+        <% } else { %>
+          <a class="button" href="/sign">Registration</a>
+          <a class="button" href="/login">Login</a>
+          <a class="button" href="/gitlogin">Login with git</a>
+        <% } %>
+        </div>
       </div>
+    </div>
+
+  </header>
+  <main>
+    <section>
+      <div class="section-wrapper" id="wallPost"></div>
     </section>
-    <% if (user) { %>
-      <% include ./parts/post-form %>
-    <% } %>
-
+    <section class="section-form" id="newPostSection"></section>
+    
   </main>
+  <script>
+    <% if (posts) { %>
+        window.posts = "<%= posts %>";
+        console.log(typeof(window.posts));
+    <% } %>
+	</script>
 
-<% include ./parts/footer %>
+<script src="/static/lib/scripts/jquery-2.2.2.min.js"></script>
+<script>
+    <% if (user) { %>
+        window.user = {
+          id: "<%= user._id %>",
+          name: "<%= user.github.name %>"||"<%= user.local.username %>",
+          avatar: "<%= user.github.avatar %>"||"<%= user.local.avatar %>",
+          configWallVisualization: [10],
+          configPostVisualization: [3],
+          myFilter: false,
+          postForm:'',
+          commentForm:[],
+          visibleInfo: {
+            state:[]
+          }
+        };
+            window.user.postForm = '<div class="form-holder post">'+
+            '<form id="postForm" action>' +
+            '<label>Share your post</label>'+
+            '<input id="postText" type="text" name="text" placeholder="Type it">'+
+            '<input class="post-form-user" type="hidden" name="authorId" value="'+ user.id +'">'+
+            '<input class="post-form-user" type="hidden" name="authorAvatar" value="'+ user.avatar +'">'+
+            '<input class="post-form-user" type="hidden" name="authorName" value="'+ user.name +'">'+
+            '<input class="post-form-user" type="hidden" name="authorName" value="'+ user.name +'">'+
+            '<button type="submit" class="success button">Fuck yeah!</button>'+
+            '</form></div>';
+
+            window.user.commentForm.push('<div class="form-holder post">'+
+            '<form id="commForm" action>' +
+            '<label>Comment:</label>'+
+            '<input id="postText" type="text" name="text" placeholder="Type it">'+
+            '<input class="post-form-user" type="hidden" name="authorId" value="'+ user.id +'">'+
+            '<input class="post-form-user" type="hidden" name="authorAvatar" value="'+ user.avatar +'">'+
+            '<input class="post-form-user" type="hidden" name="authorName" value="'+ user.name +'">'+
+            '<input class="post-form-user" type="hidden" name="authorName" value="'+ user.name +'">');
+
+            window.user.commentForm.push('<button type="submit" class="success button">Comment</button>'+
+            '</form></div>');
+
+            // window.user.visibleInfo = window.visibleInfo;
+           // '<input class="post-form-user" type="hidden" name="postId" value="'+item._id+'">'
+
+console.log(user);
+            $('#newPostSection').html(window.user.postForm);
+    <% } %>
+</script>
+<script src="/static/lib/scripts/socket.io.js"></script>
+<script src="/static/scripts/all.js"></script>
+</body>
+</html>
+

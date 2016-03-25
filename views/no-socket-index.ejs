@@ -1,0 +1,24 @@
+<% include ./parts/header %>
+
+  <main>
+
+      <div class="section-wrapper">
+
+          <% if (posts[0]) { posts.forEach(function(item){ %>
+            <div class="single-post">
+              <!-- <p>author._id <%= item.author %></p> -->
+              <p class="content-post"><%= item.content.text %></p>
+              <p class="extra-info">
+                <span class="post-info">author._idspa </span><%= item.author %><span class="post-info"> posted </span> <%= item.data %></p>
+            </div>
+          <% })} %>
+
+      </div>
+    </section>
+    <% if (user) { %>
+      <% include ./parts/socket-post-form %>
+    <% } %>
+
+  </main>
+
+<% include ./parts/footer %>

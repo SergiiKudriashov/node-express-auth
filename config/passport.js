@@ -79,27 +79,17 @@ module.exports = (passport) => {
       clientID: social.githubAuth.clientID,
       clientSecret: social.githubAuth.clientSecret,
       callbackURL: social.githubAuth.callbackURL,
-      // profileFields   : ['id', 'username', 'email'],
       passReqToCallback : true
     },
     function(req, token, refreshToken, profile, done) {
-            console.log('avatar_url--->',profile._json.avatar_url);
-            // console.log('profile name--->',profile.username);
-            // console.log('profile id--->',profile.id);
-            // console.log('json--->',profile._json);
-
-            // asynchronous
             process.nextTick(function() {
-
                 // check if the user is already logged in
                 if (!req.user) {
 
                     User.findOne({ 'github.id' : profile.id }, function(err, user) {
                         if (err)
                             return done(err);
-
                         if (user) {
-
                             // if there is a user id already but no token (user was linked at one point and then removed)
                             if (!user.github.token) {
                                 user.github.token = token;
@@ -108,16 +98,13 @@ module.exports = (passport) => {
                                 user.save(function(err) {
                                     if (err)
                                         return done(err);
-
                                     return done(null, user);
                                 });
                             }
-
                             return done(null, user); // user found, return that user
                         } else {
                             // if there is no user, create them
                             var newUser            = new User();
-
                             newUser.github.id    = profile.id;
                             newUser.github.token = token;
                             newUser.github.name  = profile.username;
@@ -125,30 +112,23 @@ module.exports = (passport) => {
                             newUser.save(function(err) {
                                 if (err)
                                     return done(err);
-
                                 return done(null, newUser);
                             });
                         }
                     });
-
                 } else {
                     // user already exists and is logged in, we have to link accounts
                     var user = req.user; // pull the user out of the session
-
                     user.github.id    = profile.id;
                     user.github.token = token;
                     user.github.name  = profile.username;
                     user.github.avatar  = profile._json.avatar_url;
-
                     user.save(function(err) {
                         if (err)
                             return done(err);
-
                         return done(null, user);
                     });
-
                 }
             });
-
         }));
 };

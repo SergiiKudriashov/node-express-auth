@@ -104,9 +104,21 @@ footer {
 .post-info {
 	color: #9acfcd;
 }
+.ava-post-holder {
+	width: 100px;
+	position: absolute;
+	padding: 10px;
+	top: 0;
+	left: 0;
+	overflow: hidden;
+}
 .single-post {
+	position: relative;
 	margin: 10px;
+	padding-left: 100px;
+	min-height: 100px;
 	background-color: #666;
+	overflow: hidden;
 }
 .single-post p {
 	margin-bottom: 0;
