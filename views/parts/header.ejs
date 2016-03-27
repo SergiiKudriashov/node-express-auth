@@ -17,7 +17,9 @@
 			<div class="medium-7 small-12 columns content-right">
 				<div class="small button-group content-right">
 				<% if (user) { %>
-					<a class="button" href="/profile" id="profile" value="<%= user._id %>">Profile</a>
+					<a class="button" href="/profile" id="profile" data-userId="<%= user._id %>"
+						data-avatar="<%= user.github.avatar||user.local.avatar %>"
+						data-userName="<%= user.github.name||user.local.username %>">Profile</a>
 					<a class="button" href="/logout">Logut</a>
 				<% } else { %>
 					<a class="button" href="/sign">Registration</a>

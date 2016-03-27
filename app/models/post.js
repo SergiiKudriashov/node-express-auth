@@ -5,11 +5,16 @@ var postSchema = new mongoose.Schema({
   content: {
     text: String
   },
-  data: {type: Date, default: new Date},
+  date: {type: Date, default: new Date},
   authorId: String,
-  authorAvatar: String,
   authorName: String,
-  comments: {type: Array, default: []},
+  authorAvatar: String,
+  comments: [{
+    text: String,
+    authorId: String,
+    authorName: String,
+    authorAvatar: String,
+  }],
 });
 
 // postSchema.methods.createPost = function(data) {
