@@ -1,6 +1,6 @@
 <% include ./parts/header %>
   <main>
-    <section>
+    <section class="profile-wrapper">
       <div id="your-profile"></div>
     </section>
     <section>
@@ -9,12 +9,7 @@
     <section class="section-form" id="newPostSection"></section>
 
   </main>
-  <script>
-    <% if (posts) { %>
-        window.posts = "<%= posts %>";
-        console.log(typeof(window.posts));
-    <% } %>
-	</script>
+
 <script src="/static/lib/scripts/socket.io.js"></script>
 <script src="/static/lib/scripts/jquery-2.2.2.min.js"></script>
 <script>

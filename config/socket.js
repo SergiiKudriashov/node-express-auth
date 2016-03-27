@@ -8,7 +8,7 @@ module.exports = function (server) {
       // .populate('authorId')
       // .populate('author')
       // .sort({date:-1})
-      Post.find({}).sort({date:-1}).limit(5).populate('author').then(function (posts) {
+      Post.find({}).sort({date:-1}).limit(3).populate('author').then(function (posts) {
       // Post.find({}).sort({date:-1}).populate('author').then(function (posts) {
             console.log('__________posts_____________');
             console.log(posts);

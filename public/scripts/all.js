@@ -1,18 +1,47 @@
+var please = (function() {
+
+	function renderPosts(item) {
+		var inner ='',
+			lenght;
+		if (item.length!==undefined) {
+			length = item.length
+		} else {
+			length = 1;
+			item[0] = item;
+		}
+		for (var i = 0; i < length; i++) {
+		inner += '<div class="single-post" id="' + item[i]._id + '">' +
+			'<div class="ava-post-holder"><img src="'+ item[i].authorAvatar +'" alt="' + item[i].authorName + '" /></div>' +
+			'<p class="content-post">'+ item[i].content.text + '</p>' +
+			'<p class="extra-info">'+
+			'Author: '+'<span class="post-info"> ' + item[i].authorName + '</span>'+
+			'Posted: '+'<span class="post-info"> ' + item[i].date.toString() + '</span>' +
+			'</p>'+
+			'<div class="comment-holder"></div>' +
+			'<div class="comment-input"></div>'+
+			'</div>';
+			}
+		return inner;
+	}
+	
+	return {
+		renderMyPosts : renderPosts
+};
+
+})();
+
 var socket = io('http://localhost:3434');
+var wallConfig = Array(5).join(3).split('');
+console.log(wallConfig);
 
-var addPost = function (post) {
-
-}
-
-// $('#newPostSection').html(window.user.postForm);
 // First time wall loading START
 socket.on('init-posts', function(data) {
 	var profile = $('#profile').data();
 
 	// Only when logined START
 	if (profile!==undefined){
-		console.log(profile);
-		var yourProfile = $('#your-profile').html('<p>'+profile.username+'<p><button class=""></button>');
+		// console.log(profile);
+		var yourProfile = $('#your-profile').html('<p>You are: <span class="you-are">'+profile.username+'</span></p>');
 		var profileInformation = '<div style="width:100px; height:100">'+'<>';
 		var postForm = '<div class="form-holder post"><form id="postForm" action>' +
 		'<label>Share your post</label><input id="postText" type="text" name="text" placeholder="Type it">'+
@@ -26,59 +55,39 @@ socket.on('init-posts', function(data) {
 
 	}
 	// Only when loggined FIN
-	console.log(data);
-	var postsIn = data.posts;
-	var wall = '';
-	var renderer = [];
-	postsIn.forEach(function(item, i) {
-		console.log();
-		wall += '<div class="single-post" id="' + item._id + '">' +
-			'<div class="ava-post-holder"><img src="'+ item.authorAvatar +'" alt="' + item.authorName + '" /></div>' +
-			'<p class="content-post">'+ item.content.text + '</p>' +
-			'<p class="extra-info">'+
-			'Author: '+'<span class="post-info"> ' + item.authorName + '</span>'+
-			'Posted: '+'<span class="post-info"> ' + item.date.toString() + '</span>' +
-			'</p>'+
-			'<div class="comment-holder"></div>' +
-			'<div class="comment-input"></div>'+
-			'</div>';
-	});
+	var wall = please.renderMyPosts(data.posts);
+
 	$("#wallPost").html(wall);
-		if(window.user) {
-			// var formId = '.comment-input';
-			// var formContent = user.postForm;
-			// $(formId).html(formContent);
-			// $('.post-form-user .post').attr('value','')
-	 }
+
+	//
 	 $('#postForm').submit(function(e) {
 		 e.preventDefault();
-		 console.log($(this).serializeArray());
 		 socket.emit('new-post', $(this).serializeArray());
 		 $('#postText').val('').focus();
 	 });
-	 console.log('_____________init post loaded ________________');
-
-
-
 
 })
-// First time wall loading START
+// First time wall loading FIN
+
+// When new post added START
 socket.on('last-post', function(data) {
-	console.log(data);
-	$('.single-post').last().remove();
-
+	// console.log('------common-------');
+	// console.log(data);
+	window.newestPost = data;
+	if ($('.single-post').length >= wallConfig.length) {
+		$('.single-post').last().remove();
+	}
+	var latestPost = please.renderMyPosts(data.post);
+	$('.single-post').first().before(latestPost);
 });
+// When new post added FIN 
+// $(document).ready(function(){
 
-$(document).ready(function(){
-	console.log($('#postForm'));
+// });
 
-});
+// $( window ).load(function() {
 
-
-
-$( window ).load(function() {
-
-});
+// });
 
 
 
