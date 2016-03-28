@@ -1,63 +1,3 @@
-var client = (function() {
-	var store = {
-		clientStore:[],
-		profile:{},
-		config: {
-			id:[],
-			com:[]
-		},
-		visual:[]
-	}
-
-	var basicConfig = {
-		visiblePosts: 5,
-		visibleComments: 3,
-		loadPosts: 5,
-		loadComments: 5
-	}
-
-	function initVisualConfig(){
-		store.visual = Array(basicConfig.visiblePosts+1).join(basicConfig.visibleComments).split('');
-		console.log('store.visual');
-		console.log(store.visual);
-		console.log(store);
-	}
-
-	function setStore(data){
-		store.clientStore = data;
-	}
-
-	function getStore(){
-		return store.clientStore;
-	}
-
-	function Profile(data){
-		store.profile = data;
-	}
-
-	function getVisual(){
-		var arr = store.visual;
-		return arr
-	}
-
-	function init(data) {
-		data.forEach(function(item, i){
-			storage.id.push(item._id);
-			storage.com.push(basicConfig.initComments);
-		});
-	}
-
-	initVisualConfig()
-
-	return {
-		setStore:setStore,
-		getStore:getStore,
-		initConfig:init,
-		getVisualConfig: getVisual
-
-};
-})();
-
 var please = (function() {
 
 	function renderPosts(item, profile) {
@@ -70,8 +10,7 @@ var please = (function() {
 			item[0] = item;
 		}
 		for (var i = 0; i < length; i++) {
-			var comments = store.returnMyComments(item[i]._id);
-			// console.log(comments);
+			var comments = store.countCommentsByPostId(item[i]._id);
 			inner += '<div class="single-post" id="' + item[i]._id + '">' +
 			'<div class="ava-post-holder"><img src="'+ item[i].authorAvatar +'" alt="' + item[i].authorName + '" /></div>' +
 			'<p class="content-post">'+ item[i].content.text + '</p>' +
@@ -118,9 +57,9 @@ var please = (function() {
 
 	function renderComment(post, repeat, inner){
 		var item = post.comments;
-		console.log(item.length, repeat);
+		// console.log(item.length, repeat);
 		if (item.length>0) {
-			var	length,
+			var length,
 				i;
 			if (item.length<repeat) {
 				length = item.length;
@@ -139,9 +78,9 @@ var please = (function() {
 				}
 
 				// if (profile!==undefined && item[i].authorId==profile.userid) {
-				// 	inner +='<button value="'+item[i]._id + '" id="'+item[i]._id+
-				// 	'" class="small button '+post._id+' delete" data-num="'+'i'+'">'+
-				// 	'del</button>'
+				//  inner +='<button value="'+item[i]._id + '" id="'+item[i]._id+
+				//  '" class="small button '+post._id+' delete" data-num="'+'i'+'">'+
+				//  'del</button>'
 				// } 
 				inner += '<span class="post-info"> ' + item[i].authorName + '   </span>'+
 							item[i].text + 
@@ -196,7 +135,7 @@ var please = (function() {
 
 })();
 
-var store = (function() {
+var Store = (function() {
 	var storage = {
 		id:[],
 		com:[]
@@ -206,10 +145,10 @@ var store = (function() {
 	var archive = [];
 
 	var basicConfig = {
-		initPosts: 5,
-		initComments: 3,
-		loadPosts: 5,
-		loadComments: 5
+		initPosts: 3,
+		initComments: 2,
+		loadPosts: 3,
+		loadComments: 3
 	}
 
 	function initStoreConfig(){
@@ -243,9 +182,9 @@ var store = (function() {
 		}
 	}
 	function returnBestStorage() {
-		console.log(store);
 		return store;
 	}
+
 	function returnStorage() {
 		var storageCopy = {
 			id:[],
@@ -258,36 +197,44 @@ var store = (function() {
 		return storageCopy;
 	}
 
+	function userProfile() {
+		return user
+	}
+
 	return {
+		userProfile:userProfile,
 		createMyStore: createStore,
 		createMyBestStore: createBestStore,
 		initMyConfig: initStoreConfig,
-		returnMyComments: returnComments,
+		countCommentsByPostId: returnComments,
 		returnMystorage: returnStorage,
 		returnMyBestStorage: returnBestStorage
-};
-})();
+	}
+});
 
 
+var store = new Store;
 var socket = io('http://localhost:3434');
-var storage;
 var profile = $('#profile').data();
 var wallConfig = store.initMyConfig();
-
-// console.log(wallConfig);
+var clientData;
+console.log(wallConfig);
+var basicConfig = {
+	initPosts: 3,
+	initComments: 2,
+	loadPosts: 3,
+	loadComments: 3
+}
 // First time wall loading REQUESTED
 socket.emit('first-load',{wallConfig});
 // First time wall loading START
 socket.on('init-posts', function(data) {
-	client.setStore(data.posts);
-	var Store = client.getStore(data.posts);
-	console.log(Store);
 
 	store.createMyStore(data.posts);
-	client.setStore(data.posts);
+	// client.setStore(data.posts);
 	console.log(data.posts);
 	// store.createMyBestStore(data.posts);
-	window.initialize = data.posts;
+	clientData = data.posts;
 	var profile = $('#profile').data();
 	var wall = please.renderMyPosts(data.posts,profile);
 
@@ -308,16 +255,31 @@ socket.on('init-posts', function(data) {
 		$('.comment-form .comment-input-text').val('').focus();
 	});
 	storage = store.returnMystorage();
+
 })
 // First time wall loading FIN
 // When new post added START
+console.log(store);
 socket.on('last-post', function(data) {
-	window.newestPost = data;
+	if (data) {
+	newestPost = data;
 	if ($('.single-post').length >= wallConfig.length) {
 		$('.single-post').last().remove();
+		clientData.shift();
+		wallConfig.shift();
+		console.log(wallConfig)
 	}
 	var latestPost = please.renderMyPosts(data.post,profile);
-	$('.single-post').first().before(latestPost);
+	(function(){
+		$('.single-post').first().before(newestPost.post);
+		clientData.push(newestPost.post);
+		wallConfig.push(basicConfig.initComments);
+		console.log('__________')
+		console.log(clientData);
+		console.log(wallConfig);
+		})();
+	}
+
 });
 
 socket.on('last-comment', function(data) {
