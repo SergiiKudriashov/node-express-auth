@@ -133,6 +133,15 @@ footer {
 	max-width: 900px;
 	margin: 0 auto;
 }
+.success.button {
+	width: 100%
+}
+/*.delete {
+	height: 25px;
+}*/
+.tea {
+	text-align: right;
+}
 .you-are {
 	color: #7fa1d2;
 }

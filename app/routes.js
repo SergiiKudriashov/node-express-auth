@@ -5,6 +5,7 @@ const multer = require('multer');
 const mime = require('mime');
 const User = require('./models/user.js');
 const Post = require('./models/post.js');
+const Comment = require('../app/models/comment.js');
 
 const isLoggedIn = (req, res, next) => {
   if (req.isAuthenticated())
@@ -59,7 +60,7 @@ module.exports = function(app, passport) {
 	});
 
 	app.post('/login', passport.authenticate('local-login', {
-		successRedirect: '/profile',
+		successRedirect: '/',
 		failureRedirect: '/login'
 	}));
 
@@ -70,7 +71,7 @@ module.exports = function(app, passport) {
 			failureRedirect: '/'
 		}),
 		function(req, res) {
-			res.redirect('/profile');
+			res.redirect('/');
 		});
 
 	app.get('/sign', (req, res) => {
@@ -81,7 +82,7 @@ module.exports = function(app, passport) {
 	});
 
 	app.post('/sign', passport.authenticate('local-signup', {
-		successRedirect: '/profile',
+		successRedirect: '/',
 		failureRedirect: '/sign'
 	}));
 
@@ -106,16 +107,16 @@ module.exports = function(app, passport) {
 		res.redirect('/profile');
 	})
 
-	app.post('/newpost', isLoggedIn, function(req, res, done) {
-		var newPost = new Post();
-		newPost.content.text = req.body.content;
-		newPost.author = req.user._id;
-		newPost.save(function(err) {
-			if (err)
-				return done(err);
-			return done(null, newPost);
-		});
-		res.redirect('/');
-	})
+	// app.post('/newpost', isLoggedIn, function(req, res, done) {
+	// 	var newPost = new Post();
+	// 	newPost.content.text = req.body.content;
+	// 	newPost.author = req.user._id;
+	// 	newPost.save(function(err) {
+	// 		if (err)
+	// 			return done(err);
+	// 		return done(null, newPost);
+	// 	});
+	// 	res.redirect('/');
+	// })
 
 };
