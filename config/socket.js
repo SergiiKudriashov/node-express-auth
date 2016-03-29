@@ -1,7 +1,6 @@
 'use strict';
 const User = require('../app/models/user.js');
 const Post = require('../app/models/post.js');
-const Comment = require('../app/models/comment.js');
 
 module.exports = (server) => {
     var io = require('socket.io').listen(server);
@@ -16,47 +15,22 @@ module.exports = (server) => {
                 return done(err);
             });
         });
-        // socket.on('first-load', (data) => {
-            // console.log(data);
-            // let amountPosts = data.wallConfig.length;
-            // let complex = {postIds:[]};
-            // Post.find({}).sort({date:-1}).limit(amountPosts)
-            // .then(function (data) {
-            //     // console.log('posts amount',data.length);
-            //     // return res.posts;
-            // })
-            // .then(() => {
-            //     io.sockets.emit('init-posts', {compl});
-            // })
-        //     .then((posts) => {
-        //         // console.log(amountPosts);
-        //         complex.posts = posts;
-        //         posts.forEach(function(item){
-        //             complex.postIds.push({item._id=item._id});
-        //             // complex.postIds.item.id
-        //         });
-        //         return Comments.find({
-        //             'postId': complex.postIds
-        //         }).sort({date:-1})
-        //     })
-        //     .then(() => {
-        //         // console.log(amountPosts);
-        //         // console.log(compl);
-        //         io.sockets.emit('init-posts', {compl});
-        //     })
-        //     .catch(function (err) {
-        //       return done(err);
-        //     });
-        // });
 
-
-
-            // .then((post) => {
-            //     return Post.populate(post, {path: 'author'});
-            // })
-            // .then((post) => {
-            //     io.sockets.emit('last-post', {post: post})
-            // });
+        socket.on('more-posts', function (data) {
+            console.log(data);
+            // var limit = data.toUpload + data.alreadyUploaded;
+            var limit = data.toUpload;
+            var skip = data.alreadyUploaded;
+            console.log(limit,skip);
+            Post.find({}).sort({date:-1}).skip(skip).limit(limit)
+            .then((posts) => {
+                console.log(posts);
+                socket.emit('load-more-posts', {posts: posts});
+            })
+            .catch(function (err) {
+                return done(err);
+            });
+        })
 
         socket.on('new-post', function (data) {
             let newPost = new Post;
@@ -72,22 +46,7 @@ module.exports = (server) => {
                     return done(err);
                 });
         })
-        socket.on('neeeew-comment', function (data) {
-            newComment.postId = data[4].value;
-            let newComment = new Comment;
-            newComment.content = data[0].value;
-            newComment.authorId = data[1].value;
-            newComment.authorAvatar = data[2].value;
-            newComment.authorName = data[3].value;
-            newComment.postId = data[4].value;
-            newComment.save()
-                .then((comment) => {
-                    io.sockets.emit('last-comment', {comment: comment})
-                })
-                .catch(function (err) {
-                    return done(err);
-                });
-        })
+
         socket.on('new-comment', function (data) {
             console.log(data);
             var newComment = {
@@ -122,11 +81,6 @@ module.exports = (server) => {
                 io.sockets.emit('delete-comment', {delComment:data})
             });
         });
-
-            // socket.on('disconnect', function() {
-            //  var time = (new Date).toLocaleTimeString();
-            //  io.sockets.json.send({});
-            // });
     });
 }
 

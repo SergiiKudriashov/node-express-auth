@@ -5,7 +5,7 @@ const multer = require('multer');
 const mime = require('mime');
 const User = require('./models/user.js');
 const Post = require('./models/post.js');
-const Comment = require('../app/models/comment.js');
+// const Comment = require('../app/models/comment.js');
 
 const isLoggedIn = (req, res, next) => {
   if (req.isAuthenticated())
