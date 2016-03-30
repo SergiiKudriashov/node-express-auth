@@ -93,9 +93,9 @@ var please = (function() {
 				//  inner +='<button value="'+item[i]._id + '" id="'+item[i]._id+
 				//  '" class="small button '+post._id+' delete" data-num="'+'i'+'">'+
 				//  'del</button>'
-				// } 
+				// }
 				inner += '<span class="post-info"> ' + item[i].authorName + '   </span>'+
-							item[i].text + 
+							item[i].text +
 						'<span class="post-info"> ' + item[i].date.toString() + '</span>';
 				if (profile!==undefined && item[i].authorId==profile.userid) {
 					inner +='<button value="' + item[i]._id + '" id="'+item[i]._id+'"'
@@ -111,8 +111,13 @@ var please = (function() {
 		return inner;
 	}
 
-	function renderSingleComment(post, number){
+	function renderSingleComment(post, profile, number){
+    if (number==undefined){
+      var number = post.comments.length -1;
+    }
 		var item = post.comments[number];
+    console.log(post);
+    console.log(item);
 		var place = post.comments.length-number;
 		var inner ='';
 		console.log("renderComment------>");
@@ -122,11 +127,11 @@ var please = (function() {
 			inner += '<div class="comment-id ' + item._id + '"><p>';
 		}
 		inner += '<span class="post-info"> ' + item.authorName + '   </span>'+
-					item.text + 
+					item.text +
 				'<span class="post-info"> ' + item.date.toString() + '</span>';
 		if (profile!==undefined && item.authorId==profile.userid) {
 			inner +='<button value="' + item._id + '" id="'+item._id+'"'
-				+'class="tiny button alert '+post._id+' delete" data-num="'+place+'" data-post="'+post._id+'">Del</button>';
+				+'class="tiny button alert '+post._id+' delete" data-num="'+number+'" data-post="'+post._id+'">Del</button>';
 			}
 		inner +='</p>'+
 		'</div>';
@@ -371,7 +376,7 @@ socket.on('last-comment', function(data) {
 	//add new comment to data
 	currentPost.comments.push(lastComment)
 	//render comment with link to post
-	var renderedComment = please.renderMyComment(currentPost,1,'')
+	var renderedComment = please.renderSingleComment(currentPost, profile);
 	//insert new comment
 	$(selector).append(renderedComment);
 	//check amount comments
@@ -385,6 +390,12 @@ socket.on('last-comment', function(data) {
 		var topCommentSelector = '#'+ postid + ' .comment-id:first-child';
 		 $(topCommentSelector).remove();
 	}
+  $( document ).ready(function() {
+    $( ".delete" ).click(function() {
+      socket.emit('delete-comment', $(this).val());
+    });
+  });
+
 
 });
 
